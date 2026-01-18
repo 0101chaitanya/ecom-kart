@@ -31,10 +31,9 @@ function CartDetail() {
         );
     }
 
-    const totalItems = selectedCart.products?.reduce(
-        (sum, p) => sum + (p.quantity || 1),
-        0
-    ) || 0;
+    const totalItems = Array.isArray(selectedCart.products) 
+        ? selectedCart.products.reduce((sum, p) => sum + (p.quantity || 1), 0)
+        : 0;
 
     return (
         <div className="container py-5">

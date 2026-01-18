@@ -17,7 +17,7 @@
  * 5. Redirects to dashboard
  */
 
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {clearError, loginSuccess, setError, setLoading} from '../store/slices/authSlice';
@@ -32,17 +32,22 @@ function Login() {
     const navigate = useNavigate();
 
     // Get auth state from Redux store
-    const {error, isAuthenticated, loading} = useSelector((state) => state.auth);
-    const [login] = useLoginMutation();
+    const {error: authError, isAuthenticated} = useSelector((state) => state.auth);
+    const [login, {isLoading, error: loginError}] = useLoginMutation();
+    
+    // Combine errors from both auth slice and login mutation
+    const error = authError || loginError;
 
     // Local form state
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     // Redirect if already authenticated - prevents accessing login when already logged in
-    if (isAuthenticated) {
-        navigate('/dashboard');
-    }
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
 
     /**
      * Handle form submission
@@ -52,20 +57,18 @@ function Login() {
         e.preventDefault();
         // Clear any previous error messages
         dispatch(clearError());
-        dispatch(setLoading(true));
 
         try {
-            const result = await login({username, password}).unwrap();
+            const result = await login({ username, password }).unwrap();
             // Dispatch login success action to update auth state
             dispatch(loginSuccess({
                 token: result.token,
                 username: username
             }));
-            // Navigate to dashboard
-            navigate('/dashboard');
+            // No need to navigate here as the useEffect will handle the redirect
         } catch (error) {
-            // Dispatch error action to show error message
-            dispatch(setError(error.message || 'Login failed'));
+            // Handle the error from the mutation
+            dispatch(setError(error.data?.message || 'Login failed'));
         }
     };
 

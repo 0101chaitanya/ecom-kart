@@ -1,19 +1,20 @@
-/**
+/*
+/!**
  * Minimal API functions for components that still need them
  * Most API calls have been migrated to RTK Query
- */
+ *!/
 
 // Use proxy in development (/api), direct URL in production
 const API_BASE_URL = import.meta.env.DEV ? "/api" : "https://fakestoreapi.com";
 
-/**
+/!**
  * Login user with username and password
  * @async
  * @param {string} username - The user's username
  * @param {string} password - The user's password
  * @returns {Promise<Object>} Response object containing JWT token
  * @throws {Error} If credentials are invalid or API request fails
- */
+ *!/
 export const loginUser = async (username, password) => {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -38,3 +39,4 @@ export const loginUser = async (username, password) => {
         throw error;
     }
 };
+*/
