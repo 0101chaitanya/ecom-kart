@@ -1,0 +1,28 @@
+.navbar-brand span {
+    color: #ff6b6b;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ff6b6b !important;
+}
+
+.nav-link.btn-link {
+    border: none;
+    color: rgba(255, 255, 255, 0.55) !important;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+
+.nav-link.btn-link:hover {
+    color: #ff6b6b !important;
+}
+
+.navbar.sticky-top {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1030;
+}
